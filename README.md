@@ -3,7 +3,7 @@
 
 1. Overview
 
-This project forms Part 2 of the ABC Retailers Cloud Solution, focusing on the development and deployment of a cloud-based online store using Microsoft Azure.
+This project forms Part 3 of the ABC Retailers Cloud Solution, focusing on the development and deployment of a cloud-based online store using Microsoft Azure.
 The solution is designed to support key retail operations such as customer management, product hosting, order processing, media storage, and backend automation using Azure Functions.
 
 The system follows a service-driven architecture that leverages multiple Azure PaaS and serverless offerings. The primary goal is to build a scalable, secure, and cost-efficient e-commerce backend suitable for modern retail environments.
