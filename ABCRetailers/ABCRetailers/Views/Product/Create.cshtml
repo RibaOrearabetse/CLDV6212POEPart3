@@ -1,0 +1,80 @@
+﻿@model ABCRetailers.Models.Product
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<h2>Add Product</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="StockAvailable" class="control-label"></label>
+        <input asp-for="StockAvailable" class="form-control" />
+        <span asp-validation-for="StockAvailable" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Product Image</label>
+        <input type="file" name="imageFile" id="imageFile" class="form-control" accept="image/*" required />
+        <small class="form-text text-muted">Select an image file (JPG, PNG, etc.)</small>
+        <div id="fileInfo" class="mt-2" style="display: none;">
+            <small class="text-success">File selected: <span id="fileName"></span></small>
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-success" />
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+<script>
+    document.getElementById('imageFile').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+
+        if (file) {
+            console.log('File selected:', file.name, 'Size:', file.size, 'Type:', file.type);
+            fileName.textContent = file.name + ' (' + Math.round(file.size / 1024) + ' KB)';
+            fileInfo.style.display = 'block';
+        } else {
+            console.log('No file selected');
+            fileInfo.style.display = 'none';
+        }
+    });
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const fileInput = document.getElementById('imageFile');
+        if (fileInput.files.length > 0) {
+            console.log('Form submitting with file:', fileInput.files[0].name);
+            // Don't prevent default - let the form submit normally
+        } else {
+            console.log('Form submitting without file');
+            alert('Please select an image file before creating the product.');
+            e.preventDefault();
+            return false;
+        }
+    });
+</script>

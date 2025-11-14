@@ -1,0 +1,51 @@
+﻿@model ABCRetailers.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<h2>Product Details</h2>
+
+<div>
+    <h4>@Model.Name</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Product Name</dt>
+        <dd class="col-sm-10">@Model.Name</dd>
+
+        <dt class="col-sm-2">Description</dt>
+        <dd class="col-sm-10">@Model.Description</dd>
+
+        <dt class="col-sm-2">Price</dt>
+        <dd class="col-sm-10">@Model.FormattedPrice</dd>
+
+        <dt class="col-sm-2">Stock Available</dt>
+        <dd class="col-sm-10">@Model.StockAvailable</dd>
+
+        <dt class="col-sm-2">Image</dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="@Model.Name" width="150" />
+            }
+        </dd>
+    </dl>
+</div>
+
+<div>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.RowKey" class="btn btn-warning">Edit</a>
+        <span> | </span>
+    }
+    @if (User.IsInRole("Customer") && Model.StockAvailable > 0)
+    {
+        <form asp-controller="Cart" asp-action="Add" method="post" style="display: inline;">
+            <input type="hidden" name="productId" value="@Model.RowKey" />
+            <input type="hidden" name="quantity" value="1" />
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
+        <span> | </span>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

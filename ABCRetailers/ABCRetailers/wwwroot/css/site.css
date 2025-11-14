@@ -1,0 +1,573 @@
+html {
+    font-size: 14px;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem #00ffff, 0 0 0 0.25rem #ff00ff;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background: transparent;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    color: #00ffff;
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(0, 255, 255, 0.2);
+        border-color: rgba(255, 0, 255, 0.5);
+    }
+
+.table {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+    .table th {
+        background: linear-gradient(45deg, #ff00ff, #00ffff);
+        color: #000;
+        font-weight: bold;
+        border: none;
+        padding: 15px;
+    }
+
+    .table td {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(0, 255, 255, 0.1);
+        padding: 12px;
+        vertical-align: middle;
+        color: #ffffff;
+    }
+
+    .table tbody tr:hover {
+        background: rgba(0, 255, 255, 0.1);
+        transform: scale(1.01);
+        transition: all 0.2s ease;
+    }
+
+.btn {
+    border-radius: 25px;
+    border: 2px solid transparent;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+.btn-primary {
+    background: linear-gradient(45deg, #00ffff, #0080ff);
+    border-color: #00ffff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+    .btn-primary:hover {
+        background: linear-gradient(45deg, #00ffff, #00ccff);
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+        transform: translateY(-2px);
+    }
+
+.btn-success {
+    background: linear-gradient(45deg, #00ff00, #00cc00);
+    border-color: #00ff00;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+    .btn-success:hover {
+        background: linear-gradient(45deg, #00ff00, #00ff80);
+        box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+        transform: translateY(-2px);
+    }
+
+.btn-warning {
+    background: linear-gradient(45deg, #ffaa00, #ff8000);
+    border-color: #ffaa00;
+    color: #000;
+    box-shadow: 0 0 20px rgba(255, 170, 0, 0.5);
+}
+
+    .btn-warning:hover {
+        background: linear-gradient(45deg, #ffaa00, #ffcc00);
+        box-shadow: 0 0 30px rgba(255, 170, 0, 0.8);
+        transform: translateY(-2px);
+    }
+
+.btn-danger {
+    background: linear-gradient(45deg, #ff0066, #cc0044);
+    border-color: #ff0066;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(255, 0, 102, 0.5);
+}
+
+    .btn-danger:hover {
+        background: linear-gradient(45deg, #ff0066, #ff4080);
+        box-shadow: 0 0 30px rgba(255, 0, 102, 0.8);
+        transform: translateY(-2px);
+    }
+
+.btn-info {
+    background: linear-gradient(45deg, #00ccff, #0080ff);
+    border-color: #00ccff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+}
+
+    .btn-info:hover {
+        background: linear-gradient(45deg, #00ccff, #00ffff);
+        box-shadow: 0 0 30px rgba(0, 204, 255, 0.8);
+        transform: translateY(-2px);
+    }
+
+.btn-secondary {
+    background: linear-gradient(45deg, #666666, #444444);
+    border-color: #666666;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(102, 102, 102, 0.5);
+}
+
+    .btn-secondary:hover {
+        background: linear-gradient(45deg, #666666, #888888);
+        box-shadow: 0 0 30px rgba(102, 102, 102, 0.8);
+        transform: translateY(-2px);
+    }
+
+.form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    border-radius: 25px;
+    color: #fff;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+    .form-control:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: #00ffff;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        color: #fff;
+    }
+
+    .form-control::placeholder {
+        color: rgba(0, 255, 255, 0.7);
+    }
+
+.alert {
+    border-radius: 15px;
+    border: 2px solid;
+    backdrop-filter: blur(10px);
+    font-weight: bold;
+}
+
+.alert-success {
+    background: rgba(0, 255, 0, 0.1);
+    border-color: #00ff00;
+    color: #00ff00;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+}
+
+.alert-danger {
+    background: rgba(255, 0, 102, 0.1);
+    border-color: #ff0066;
+    color: #ff0066;
+    box-shadow: 0 0 20px rgba(255, 0, 102, 0.3);
+}
+
+.navbar {
+    background: linear-gradient(90deg, #000000, #1a1a2e, #16213e) !important;
+    border-bottom: 2px solid #00ffff;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+}
+
+.navbar-brand {
+    background: linear-gradient(45deg, #00ffff, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.nav-link {
+    color: #00ffff !important;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+    .nav-link:hover {
+        color: #ff00ff !important;
+        text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #00ffff, #ff00ff);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+
+.footer {
+    background: linear-gradient(90deg, #000000, #1a1a2e) !important;
+    border-top: 2px solid #00ffff;
+    color: #00ffff;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+}
+
+.page-actions {
+    margin-bottom: 1rem;
+}
+
+.display-4, .display-6 {
+    background: linear-gradient(45deg, #00ffff, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #00ffff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.text-muted {
+    color: rgba(0, 255, 255, 0.7) !important;
+}
+
+.bg-light {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #00ffff, #ff00ff);
+    border-radius: 5px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(45deg, #ff00ff, #00ffff);
+    }
+
+/* Enhanced table styling */
+.table {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 255, 255, 0.1);
+}
+
+    .table thead th {
+        background: linear-gradient(135deg, #00ffff, #ff00ff);
+        color: #000;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: none;
+        padding: 1rem;
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+        .table tbody tr:hover {
+            background: rgba(0, 255, 255, 0.1);
+            transform: scale(1.01);
+        }
+
+    .table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        border: none;
+    }
+
+/* Search form styling */
+.search-form {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 255, 255, 0.1);
+}
+
+/* Button group styling */
+.btn-group .btn {
+    margin-right: 0.25rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+    .btn-group .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+/* Form styling improvements */
+.form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    color: #fff;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+    .form-control:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #00ffff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 255, 255, 0.25);
+        color: #fff;
+    }
+
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+/* Alert styling */
+.alert {
+    border-radius: 15px;
+    border: none;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.alert-success {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+    border-left: 4px solid #28a745;
+}
+
+.alert-danger {
+    background: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+    border-left: 4px solid #dc3545;
+}
+
+/* Page header styling */
+.page-header {
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 255, 255, 0.1);
+}
+
+    .page-header h2 {
+        margin: 0;
+        color: #fff;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+/* Status badges */
+.badge {
+    font-size: 0.75em;
+    padding: 0.5em 0.75em;
+    border-radius: 0.5em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Force black text in all dropdown lists for visibility */
+select,
+select.form-control,
+.form-select,
+select option {
+    color: #000 !important;
+    background-color: #fff !important;
+}
+
+    /* Ensure chosen value in selects is clearly visible */
+    select:focus,
+    .form-select:focus {
+        color: #000 !important;
+        background-color: #fff !important;
+    }
+
+    /* Ensure dropdown options are clickable and visible */
+    select option {
+        color: #000 !important;
+        background-color: #fff !important;
+        padding: 8px;
+    }
+
+    select option:hover,
+    select option:focus,
+    select option:checked {
+        background-color: #f0f0f0 !important;
+        color: #000 !important;
+    }
+
+/* Bootstrap dropdown menus (if used anywhere) */
+.dropdown-menu {
+    color: #000;
+    background-color: #fff;
+}
+
+    .dropdown-menu .dropdown-item {
+        color: #000 !important;
+    }
+
+        .dropdown-menu .dropdown-item:hover,
+        .dropdown-menu .dropdown-item:focus {
+            color: #000 !important;
+            background-color: #f1f1f1;
+        }
+
+/* Product card styling */
+.product-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+}
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3);
+        border-color: rgba(0, 255, 255, 0.5);
+    }
+
+        .product-card:hover .card-body {
+            background: rgba(0, 255, 255, 0.05);
+        }
+
+    .product-card .card-body {
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+    }
+
+        .product-card .card-body .fw-bold {
+            color: #00ffff !important;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            font-size: 1.1rem;
+        }
+
+        .product-card .card-body .text-muted {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .product-card .card-body .text-success {
+            color: #28a745 !important;
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+        }
+
+/* Upload files display styling */
+.uploaded-files {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 255, 255, 0.1);
+}
+
+.file-item {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+    .file-item:hover {
+        background: rgba(0, 255, 255, 0.1);
+        border-color: rgba(0, 255, 255, 0.4);
+        transform: translateX(5px);
+    }
+
+.file-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+    color: #00ffff;
+}
+
+.file-info h6 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.file-info small {
+    color: rgba(255, 255, 255, 0.7);
+}

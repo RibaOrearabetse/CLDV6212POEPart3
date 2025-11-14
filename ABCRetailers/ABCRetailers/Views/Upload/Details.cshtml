@@ -1,0 +1,141 @@
+@model ABCRetailers.Controllers.UploadedFileInfo
+@{
+    ViewData["Title"] = "Payment Proof Details";
+    var order = ViewBag.Order as ABCRetailers.Models.Order;
+    var customer = ViewBag.Customer as ABCRetailers.Models.CustomerDetails;
+}
+
+<div class="container">
+    <h2 class="mb-4 text-white">Payment Proof Details</h2>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-6">
+            @if (customer != null)
+            {
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">👤 Customer Information</h5>
+                    </div>
+                    <div class="card-body bg-dark text-white">
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Name:</strong></div>
+                            <div class="col-md-8">@customer.Name @customer.Surname</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Username:</strong></div>
+                            <div class="col-md-8">@customer.Username</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Email:</strong></div>
+                            <div class="col-md-8">@customer.Email</div>
+                        </div>
+                        @if (!string.IsNullOrEmpty(customer.ShippingAddress))
+                        {
+                            <div class="row">
+                                <div class="col-md-4"><strong>Shipping Address:</strong></div>
+                                <div class="col-md-8">@customer.ShippingAddress</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">👤 Customer Information</h5>
+                    </div>
+                    <div class="card-body bg-dark text-white">
+                        <p class="text-muted">Customer information not available.</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-6">
+            @if (order != null)
+            {
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">🛒 Order Information</h5>
+                    </div>
+                    <div class="card-body bg-dark text-white">
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Order ID:</strong></div>
+                            <div class="col-md-8">@order.OrderId</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Product Name:</strong></div>
+                            <div class="col-md-8">@order.ProductName</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Order Date:</strong></div>
+                            <div class="col-md-8">@order.OrderDate.ToString("MMMM dd, yyyy")</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Status:</strong></div>
+                            <div class="col-md-8">
+                                <span class="badge bg-@(order.Status == "PROCESSED" || order.Status == "Delivered" ? "success" : order.Status == "Cancelled" ? "danger" : "warning")">
+                                    @order.Status
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Quantity:</strong></div>
+                            <div class="col-md-8">@order.Quantity</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Unit Price:</strong></div>
+                            <div class="col-md-8">@order.Price.ToString("C", new System.Globalization.CultureInfo("en-ZA"))</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"><strong>Total Price:</strong></div>
+                            <div class="col-md-8"><strong class="text-success">@order.TotalPrice.ToString("C", new System.Globalization.CultureInfo("en-ZA"))</strong></div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">🛒 Order Information</h5>
+                    </div>
+                    <div class="card-body bg-dark text-white">
+                        <p class="text-muted">Order information not available.</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body bg-dark">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Uploads
+                    </a>
+                    @if (order != null)
+                    {
+                        <a asp-controller="Order" asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-info ms-2">
+                            <i class="fas fa-shopping-cart"></i> View Full Order Details
+                        </a>
+                    }
+                    <a asp-action="Download" asp-route-fileName="@Model.FileName" class="btn btn-success ms-2">
+                        <i class="fas fa-download"></i> Download Payment Proof
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

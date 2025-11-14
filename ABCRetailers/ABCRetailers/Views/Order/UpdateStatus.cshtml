@@ -1,0 +1,56 @@
+﻿@model ABCRetailers.Models.Order
+
+@{
+    ViewData["Title"] = "Update Order Status";
+}
+
+<h2>Update Order Status</h2>
+
+<div>
+    <h4>Order #@Model.OrderId</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Customer</dt>
+        <dd class="col-sm-10">@Model.Username</dd>
+
+        <dt class="col-sm-2">Product</dt>
+        <dd class="col-sm-10">@Model.ProductName</dd>
+
+        <dt class="col-sm-2">Quantity</dt>
+        <dd class="col-sm-10">@Model.Quantity</dd>
+
+        <dt class="col-sm-2">Total Price</dt>
+        <dd class="col-sm-10">@Model.TotalPrice.ToString("C")</dd>
+
+        <dt class="col-sm-2">Current Status</dt>
+        <dd class="col-sm-10">
+            <span class="badge bg-@(Model.Status switch {
+                "Submitted" => "primary",
+                "Processing" => "warning", 
+                "Shipped" => "info",
+                "Delivered" => "success",
+                "Cancelled" => "danger",
+                _ => "secondary"
+            })">@Model.Status</span>
+        </dd>
+    </dl>
+</div>
+
+<form asp-action="UpdateStatus" method="post">
+    <input type="hidden" asp-for="RowKey" />
+    
+    <div class="form-group mb-3">
+        <label for="status" class="form-label">New Status</label>
+        <select name="status" id="status" class="form-select" required>
+            @foreach (var option in ViewBag.StatusOptions)
+            {
+                <option value="@option.Value" selected="@(option.Value == Model.Status)">@option.Text</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Update Status</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

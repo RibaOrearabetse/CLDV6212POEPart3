@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "Customer Dashboard";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h2>Welcome, @ViewBag.Username!</h2>
+        <p class="text-muted">Your Customer Dashboard</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-shopping-cart fa-3x text-primary mb-3"></i>
+                <h5>My Cart</h5>
+                <p class="text-muted">View and manage your shopping cart</p>
+                <a asp-controller="Cart" asp-action="Index" class="btn btn-primary">Go to Cart</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-box fa-3x text-success mb-3"></i>
+                <h5>My Orders</h5>
+                <p class="text-muted">View your order history</p>
+                <a asp-controller="Order" asp-action="MyOrders" class="btn btn-success">View Orders</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-store fa-3x text-info mb-3"></i>
+                <h5>Browse Products</h5>
+                <p class="text-muted">Shop our products</p>
+                <a asp-controller="Product" asp-action="Index" class="btn btn-info">Browse</a>
+            </div>
+        </div>
+    </div>
+</div>
+

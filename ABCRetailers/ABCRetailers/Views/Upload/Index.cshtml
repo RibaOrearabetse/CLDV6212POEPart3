@@ -1,0 +1,103 @@
+﻿@model ABCRetailers.Models.FileUploadModel
+
+@{
+    ViewData["Title"] = "Upload Proof of Payment";
+}
+
+<h2>Upload Proof of Payment</h2>
+
+<form asp-action="Index" asp-controller="Upload" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="ProofOfPayment" class="control-label"></label>
+        <input asp-for="ProofOfPayment" type="file" class="form-control" />
+        <span asp-validation-for="ProofOfPayment" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="OrderId" class="control-label">Order</label>
+        <select asp-for="OrderId" class="form-control" asp-items="ViewBag.Orders"></select>
+        <span asp-validation-for="OrderId" class="text-danger"></span>
+    </div>
+
+    @if (ViewBag.IsCustomer == true)
+    {
+        <div class="form-group">
+            <label asp-for="CustomerName" class="control-label">Customer</label>
+            <input asp-for="CustomerName" class="form-control" value="@ViewBag.CustomerUsername" readonly />
+            <input type="hidden" asp-for="CustomerName" value="@ViewBag.CustomerUsername" />
+            <span asp-validation-for="CustomerName" class="text-danger"></span>
+            <small class="text-muted">You can only upload payment proof for your own orders.</small>
+        </div>
+    }
+    else
+    {
+        <div class="form-group">
+            <label asp-for="CustomerName" class="control-label">Customer</label>
+            <select asp-for="CustomerName" class="form-control" asp-items="ViewBag.Customers"></select>
+            <span asp-validation-for="CustomerName" class="text-danger"></span>
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">Upload</button>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+<!-- Uploaded Files Section -->
+@if (ViewBag.UploadedFiles is List<ABCRetailers.Controllers.UploadedFileInfo> uploadedFiles && uploadedFiles.Any())
+{
+    <div class="uploaded-files">
+        <h4 class="mb-3">📁 Recently Uploaded Files</h4>
+        <div class="row">
+            @foreach (var file in uploadedFiles)
+            {
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <a asp-action="Details" asp-route-fileName="@file.FileName" class="text-decoration-none">
+                        <div class="file-item d-flex align-items-center" style="cursor: pointer; transition: all 0.3s ease;">
+                            <div class="file-icon">
+                                @if (file.FileType.ToLower().Contains("pdf"))
+                                {
+                                    <i class="fas fa-file-pdf" style="font-size: 2rem; color: #dc3545;"></i>
+                                }
+                                else if (file.FileType.ToLower().Contains("image"))
+                                {
+                                    <i class="fas fa-file-image" style="font-size: 2rem; color: #28a745;"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-file" style="font-size: 2rem; color: #6c757d;"></i>
+                                }
+                            </div>
+                            <div class="file-info flex-grow-1">
+                                <h6 class="mb-1 text-white">@file.FileName</h6>
+                                <small class="d-block text-white-50">Size: @file.FileSize</small>
+                                <small class="d-block text-white-50">Uploaded: @file.UploadDate.ToString("MMM dd, yyyy HH:mm")</small>
+                                @if (!string.IsNullOrEmpty(file.OrderId))
+                                {
+                                    <small class="d-block text-white-50">Order: @file.OrderId</small>
+                                }
+                                @if (!string.IsNullOrEmpty(file.CustomerName))
+                                {
+                                    <small class="d-block text-white-50">Customer: @file.CustomerName</small>
+                                }
+                                <small class="d-block text-info mt-2">Click to view details →</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="uploaded-files">
+        <h4 class="mb-3">📁 Uploaded Files</h4>
+        <div class="text-center text-muted">
+            <i class="fas fa-folder-open fa-3x mb-3"></i>
+            <p>No files uploaded yet. Upload your first payment proof above!</p>
+        </div>
+    </div>
+}
+

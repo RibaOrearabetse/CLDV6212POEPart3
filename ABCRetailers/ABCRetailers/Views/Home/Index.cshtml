@@ -1,0 +1,129 @@
+﻿@using System.Globalization
+@model ABCRetailers.Models.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container">
+    <!-- Hero Banner -->
+    <div class="p-4 mb-4 bg-light rounded-3 shadow-sm d-flex align-items-center">
+        <div class="me-3" style="font-size:2.5rem;">🛍️</div>
+        <div>
+            <h1 class="display-6 m-0">Welcome to ABC Retailers!</h1>
+            <small class="text-muted">Your one-stop shop for the best deals and latest products</small>
+        </div>
+    </div>
+
+    <!-- Quick Actions - Only show for Admins or Anonymous users, not for Customers -->
+    @if (!User.IsInRole("Customer"))
+    {
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-md-6 col-lg-3">
+                <a asp-controller="Customer" asp-action="Index" class="text-decoration-none">
+                    <div class="card text-white bg-primary text-center">
+                        <div class="card-body">
+                            <div class="mb-2" style="font-size:2rem;">👥</div>
+                            <div class="fw-bold">View Customers</div>
+                            <small class="opacity-75">@Model.CustomerCount total</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <a asp-controller="Product" asp-action="Index" class="text-decoration-none">
+                    <div class="card text-white bg-success text-center">
+                        <div class="card-body">
+                            <div class="mb-2" style="font-size:2rem;">📦</div>
+                            <div class="fw-bold">View Products</div>
+                            <small class="opacity-75">@Model.ProductCount total</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <a asp-controller="Order" asp-action="Index" class="text-decoration-none">
+                    <div class="card text-dark bg-warning text-center">
+                        <div class="card-body">
+                            <div class="mb-2" style="font-size:2rem;">🛒</div>
+                            <div class="fw-bold">View Orders</div>
+                            <small class="opacity-75">@Model.OrderCount total</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <a asp-controller="Upload" asp-action="Index" class="text-decoration-none">
+                    <div class="card text-white bg-info text-center">
+                        <div class="card-body">
+                            <div class="mb-2" style="font-size:2rem;">⬆️</div>
+                            <div class="fw-bold">Upload Files</div>
+                            <small class="opacity-75">Payment proofs</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <form asp-action="TestQueue" method="post">
+                    <button type="submit" class="btn btn-light w-100 h-100" style="min-height:84px;">
+                        <div class="fw-bold">Send Test Queue Message</div>
+                        <small class="text-muted">Sends to azure-webjobs-blobtrigger-…</small>
+                    </button>
+                </form>
+            </div>
+        </div>
+    }
+
+    <!-- Featured Products -->
+    <h4 class="mb-3">⭐ Featured Products</h4>
+    <div class="row g-3">
+        @if (Model?.Products != null && Model.Products.Any())
+        {
+            foreach (var p in Model.Products)
+            {
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card h-100 product-card">
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@p.Id" class="text-decoration-none">
+                            @if (!string.IsNullOrWhiteSpace(p.ImageUrl))
+                            {
+                                <img src="@p.ImageUrl" class="card-img-top" alt="@p.ProductName" style="object-fit:cover;height:160px;" />
+                            }
+                            <div class="card-body">
+                                <div class="fw-bold">@p.ProductName</div>
+                                <small class="text-muted">@p.Description</small>
+                                <div class="mt-2 text-success fw-bold">@p.Price.ToString("C", new CultureInfo("en-ZA"))</div>
+                                <small class="text-muted">Stock: @p.StockAvailable</small>
+                            </div>
+                        </a>
+                        @if (p.StockAvailable > 0)
+                        {
+                            <div class="card-footer">
+                                @if (User.IsInRole("Customer"))
+                                {
+                                    <form asp-controller="Cart" asp-action="Add" method="post">
+                                        <input type="hidden" name="productId" value="@p.Id" />
+                                        <input type="hidden" name="quantity" value="1" />
+                                        <button type="submit" class="btn btn-success btn-sm w-100">Add to Cart</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Login" asp-action="Index" class="btn btn-success btn-sm w-100">Add to Cart</a>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-secondary btn-sm w-100" disabled>Out of Stock</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12"><div class="alert alert-light">No products available.</div></div>
+        }
+    </div>
+</div>

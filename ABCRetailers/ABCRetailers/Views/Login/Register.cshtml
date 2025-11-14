@@ -1,0 +1,91 @@
+@model ABCRetailers.Models.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h3 class="card-title mb-0">Create New Account</h3>
+            </div>
+            <div class="card-body bg-dark">
+                <form asp-action="Register" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Username" class="form-label text-white fw-bold"></label>
+                            <input asp-for="Username" class="form-control" />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Email" class="form-label text-white fw-bold"></label>
+                            <input asp-for="Email" class="form-control" type="email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label text-white fw-bold"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="FirstName" class="form-label text-white fw-bold"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="LastName" class="form-label text-white fw-bold"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ShippingAddress" class="form-label text-white fw-bold"></label>
+                        <textarea asp-for="ShippingAddress" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Role" class="form-label text-white fw-bold">Select Role</label>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <select asp-for="Role" class="form-select" style="background-color: #fff !important; color: #000 !important; cursor: pointer; position: relative; z-index: 10;" required>
+                                <option value="">-- Select Role --</option>
+                                <option value="Customer">Customer</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                            <small class="text-muted text-white">As an administrator, you can create either Customer or Admin accounts.</small>
+                        }
+                        else
+                        {
+                            <select asp-for="Role" class="form-select" style="background-color: #fff !important; color: #000 !important; cursor: pointer; position: relative; z-index: 10;" required>
+                                <option value="">-- Select Role --</option>
+                                <option value="Customer" selected>Customer</option>
+                            </select>
+                            <small class="text-muted text-white">Only administrators can create admin accounts. You can only register as a Customer.</small>
+                        }
+                        <span asp-validation-for="Role" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success">Register</button>
+                        <a asp-action="Index" class="btn btn-outline-light text-white" style="color: white !important;">Already have an account? Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

@@ -1,0 +1,165 @@
+@model ABCRetailers.Models.ViewModels.CartPageViewModel
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+@using System.Globalization
+
+<div class="container">
+    <h2 class="mb-4">Shopping Cart</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (Model.Items == null || !Model.Items.Any())
+    {
+        <div class="alert alert-info">
+            <h4>Your cart is empty</h4>
+            <p>Start shopping to add items to your cart!</p>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Continue Shopping</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-white">Product</th>
+                                    <th class="text-white">Price</th>
+                                    <th class="text-white">Quantity</th>
+                                    <th class="text-white">Subtotal</th>
+                                    <th class="text-white">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr data-cart-id="@item.CartId" data-price="@item.Price">
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                            {
+                                                <img src="@item.ImageUrl" alt="@item.ProductName" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;" />
+                                            }
+                                            <strong class="text-white">@item.ProductName</strong>
+                                        </td>
+                                        <td class="item-price text-white">@item.Price.ToString("C", new CultureInfo("en-ZA"))</td>
+                                        <td>
+                                            <form asp-action="Update" method="post" style="display: inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="cartId" value="@item.CartId" />
+                                                <input type="number" 
+                                                       name="quantity" 
+                                                       value="@item.Quantity" 
+                                                       min="1" 
+                                                       style="width: 60px;" 
+                                                       class="form-control form-control-sm d-inline quantity-input" 
+                                                       data-cart-id="@item.CartId"
+                                                       data-price="@item.Price" />
+                                                <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
+                                            </form>
+                                        </td>
+                                        <td class="item-subtotal text-white">@item.Subtotal.ToString("C", new CultureInfo("en-ZA"))</td>
+                                        <td>
+                                            <form asp-action="Remove" method="post" style="display: inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="cartId" value="@item.CartId" />
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Remove this item from cart?');">Remove</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-white">Order Summary</h5>
+                        <hr />
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong class="text-white">Total:</strong>
+                            <strong class="text-success" id="grand-total">@Model.Total.ToString("C", new CultureInfo("en-ZA"))</strong>
+                        </div>
+                        <form asp-action="ConfirmOrder" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-success btn-lg w-100" onclick="return confirm('Confirm order? This will create your order and clear your cart.');">
+                                Confirm Order
+                            </button>
+                        </form>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+            const grandTotalElement = document.getElementById('grand-total');
+
+            // Format currency for display
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('en-ZA', {
+                    style: 'currency',
+                    currency: 'ZAR'
+                }).format(amount);
+            }
+
+            // Calculate and update totals
+            function updateTotals() {
+                let grandTotal = 0;
+
+                quantityInputs.forEach(function(input) {
+                    const row = input.closest('tr');
+                    const price = parseFloat(input.getAttribute('data-price'));
+                    const quantity = parseInt(input.value) || 1;
+                    const subtotal = price * quantity;
+
+                    // Update subtotal in the row
+                    const subtotalCell = row.querySelector('.item-subtotal');
+                    if (subtotalCell) {
+                        subtotalCell.textContent = formatCurrency(subtotal);
+                    }
+
+                    grandTotal += subtotal;
+                });
+
+                // Update grand total
+                if (grandTotalElement) {
+                    grandTotalElement.textContent = formatCurrency(grandTotal);
+                }
+            }
+
+            // Add event listeners to all quantity inputs
+            quantityInputs.forEach(function(input) {
+                input.addEventListener('input', updateTotals);
+                input.addEventListener('change', updateTotals);
+            });
+
+            // Initial calculation
+            updateTotals();
+        });
+    </script>
+}
+

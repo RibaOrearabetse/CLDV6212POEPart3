@@ -1,0 +1,105 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    var customers = ViewBag.Customers as List<ABCRetailers.Models.Customer> ?? new List<ABCRetailers.Models.Customer>();
+    var orders = ViewBag.Orders as List<ABCRetailers.Models.OrderApi> ?? new List<ABCRetailers.Models.OrderApi>();
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h2>Admin Dashboard</h2>
+        <p class="text-muted">Welcome, @User.Identity?.Name!</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Customers</h5>
+                <h2>@(ViewBag.CustomerCount ?? customers.Count)</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Orders</h5>
+                <h2>@(ViewBag.OrderCount ?? orders.Count)</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h5 class="card-title">Pending Orders</h5>
+                <h2>@(ViewBag.PendingOrders ?? orders.Count(o => o.Status != "PROCESSED" && o.Status != "Delivered" && o.Status != "Cancelled"))</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Products</h5>
+                <h2>@(ViewBag.ProductCount ?? 0)</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Recent Orders</h5>
+            </div>
+            <div class="card-body">
+                @if (orders.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in orders.Take(10))
+                                {
+                                    <tr>
+                                        <td>@order.Id</td>
+                                        <td>@order.CustomerId</td>
+                                        <td>@order.ProductName</td>
+                                        <td>@order.Quantity</td>
+                                        <td>R @order.TotalAmount.ToString("F2")</td>
+                                        <td>
+                                            <span class="badge bg-@(order.Status == "PROCESSED" ? "success" : "warning")">
+                                                @order.Status
+                                            </span>
+                                        </td>
+                                        <td>@order.OrderDateUtc.ToString("yyyy-MM-dd")</td>
+                                        <td>
+                                            <a asp-controller="Order" asp-action="Edit" asp-route-id="@order.Id" class="btn btn-sm btn-primary">Manage</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <a asp-controller="Order" asp-action="Index" class="btn btn-primary">View All Orders</a>
+                }
+                else
+                {
+                    <p class="text-muted">No orders found.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,88 @@
+﻿@model IEnumerable<ABCRetailers.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h2>Products</h2>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <form asp-action="Index" method="get" class="d-flex">
+            <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" class="form-control me-2" placeholder="Search products..." />
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+            @if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+            {
+                <a asp-action="Index" class="btn btn-outline-secondary ms-2">Clear</a>
+            }
+        </form>
+    </div>
+    <div class="col-md-6 text-end">
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Create" class="btn btn-primary">Add New Product</a>
+        }
+    </div>
+</div>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Description)</th>
+            <th>@Html.DisplayNameFor(model => model.Price)</th>
+            <th>@Html.DisplayNameFor(model => model.StockAvailable)</th>
+            <th>@Html.DisplayNameFor(model => model.ImageUrl)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.FormattedPrice</td>
+                <td>@item.StockAvailable</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="@item.ImageUrl" alt="@item.Name" width="80" />
+                        <br />
+                        <small class="text-muted">URL: @item.ImageUrl</small>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No image</span>
+                    }
+                </td>
+                <td>
+                    @if (User.IsInRole("Customer"))
+                    {
+                        @if (item.StockAvailable > 0)
+                        {
+                            <form asp-controller="Cart" asp-action="Add" method="post" style="display: inline;">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="productId" value="@item.RowKey" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-success btn-sm">Add to Cart</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-secondary btn-sm" disabled>Out of Stock</button>
+                        }
+                    }
+                    else if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.RowKey" class="btn btn-warning btn-sm">Edit</a>
+                        <span> | </span>
+                        <a asp-action="Details" asp-route-id="@item.RowKey" class="btn btn-info btn-sm">Details</a>
+                        <span> | </span>
+                        <a asp-action="Delete" asp-route-id="@item.RowKey" class="btn btn-danger btn-sm">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
